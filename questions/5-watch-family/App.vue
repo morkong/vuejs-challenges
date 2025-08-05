@@ -4,19 +4,22 @@ import { ref, watch } from "vue"
 const count = ref(0)
 
 /**
- * Challenge 1: Watch once
- * Make sure the watch callback only triggers once
+ * 挑战 1: Watch 一次
+ * 确保副作用函数只执行一次
 */
 watch(count, () => {
   console.log("Only triggered once")
+},{
+  immediate: true,
+  once: true
 })
 
 count.value = 1
 setTimeout(() => count.value = 2)
 
 /**
- * Challenge 2: Watch object
- * Make sure the watch callback is triggered
+ * 挑战 2: Watch 对象
+ * 确保副作用函数被正确触发
 */
 const state = ref({
   count: 0,
@@ -24,19 +27,24 @@ const state = ref({
 
 watch(state, () => {
   console.log("The state.count updated")
+},{
+  deep: true
 })
 
 state.value.count = 2
 
 /**
- * Challenge 3: Callback Flush Timing
- * Make sure visited the updated eleRef
+ * 挑战 3: 副作用函数刷新时机
+ * 确保正确访问到更新后的`eleRef`值
 */
 
 const eleRef = ref()
 const age = ref(2)
 watch(age, () => {
   console.log(eleRef.value)
+},
+{
+  flush: 'post'
 })
 age.value = 18
 

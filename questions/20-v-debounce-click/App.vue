@@ -1,14 +1,31 @@
 <script setup lang='ts'>
 
 /**
- * Implement the custom directive
- * Make sure the `onClick` method only gets triggered once when clicked many times quickly
- * And you also need to support the debounce delay time option. e.g `v-debounce-click:ms`
+ * 实现以下自定义指令
+ * 确保在一定时间内当快速点击按钮多次时只触发一次点击事件
+ * 你需要支持防抖延迟时间选项, 用法如 `v-debounce-click:ms`
  *
 */
 
-const VDebounceClick = {
+function debounce(fn,duration){
+  let timer = null 
+  return (...args)=>{
+    if(timer){
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      fn.apply(this,args)
+    }, duration);
+  }
+}
 
+const VDebounceClick = {
+  mounted(el, binding, vnode) {
+    const fn = binding.value
+    const duration = binding.arg
+    const newFn = debounce(fn,duration)
+    el.addEventListener("click",newFn)
+  },
 }
 
 function onClick() {

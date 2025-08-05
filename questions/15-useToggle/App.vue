@@ -1,11 +1,18 @@
 <script setup lang='ts'>
-
+import { ref } from 'vue'
 /**
- * Implement a composable function that toggles the state
- * Make the function work correctly
+ * 实现一个切换状态的可组合函数
+ * 确保该功能正常工作
 */
-function useToggle() {
+function useToggle(_start: boolean = false) {
+  const state = ref(_start)
 
+  return [
+    state,
+    () => {
+      state.value = !state.value
+    }
+  ]
 }
 
 const [state, toggle] = useToggle(false)

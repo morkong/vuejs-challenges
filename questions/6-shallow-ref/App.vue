@@ -3,15 +3,16 @@ import { shallowRef, watch } from "vue"
 
 const state = shallowRef({ count: 1 })
 
-// Does NOT trigger
+// 回调没被触发
 watch(state, () => {
   console.log("State.count Updated")
 }, { deep: true })
 
 /**
- * Modify the code so that we can make the watch callback trigger.
+ * 修改以下代码使watch回调被触发
+ *
 */
-state.value.count = 2
+state.value = { count: 2 } 
 
 </script>
 

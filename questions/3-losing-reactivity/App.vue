@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from "vue"
+import { reactive,toRefs } from "vue"
 
 function useCount() {
   const state = reactive({
@@ -11,12 +11,12 @@ function useCount() {
   }
 
   return {
-    state,
+    state:toRefs(state), // 使用 toRefs 保持响应性
     update,
   }
 }
 
-// Ensure the destructured properties don't lose their reactivity
+// 确保解构不丢失响应性
 const { state: { count }, update } = useCount()
 
 </script>

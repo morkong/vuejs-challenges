@@ -1,51 +1,52 @@
 <script setup lang="ts">
-import { ref, Ref, reactive } from "vue"
+import { ref, Ref, reactive,isRef,unref ,toRef} from "vue"
 
 const initial = ref(10)
 const count = ref(0)
 
-// Challenge 1: Update ref
+// 挑战 1: 更新 ref
 function update(value) {
-  // impl...
+  // 实现...
+  count.value = value
 }
 
 /**
- * Challenge 2: Check if the `count` is a ref object.
- * Make the output be 1
+ * 挑战 2: 检查`count`是否为一个 ref 对象
+ * 确保以下输出为1
 */
 console.log(
   // impl ? 1 : 0
+  isRef(count) ? 1 : 0
 )
 
 /**
- * Challenge 3: Unwrap ref
- * Make the output be true
+ * 挑战 3: 如果参数是一个 ref，则返回内部值，否则返回参数本身
+ * 确保以下输出为true
 */
 function initialCount(value: number | Ref<number>) {
-  // Make the output be true
-  console.log(value === 10)
+  // 确保以下输出为true
+  console.log(unref(value) === 10)
 }
 
 initialCount(initial)
 
 /**
- * Challenge 4:
- * create a ref for a property on a source reactive object.
- * The created ref is synced with its source property:
- * mutating the source property will update the ref, and vice-versa.
- * Make the output be true
+ * 挑战 4:
+ * 为源响应式对象上的某个 `property` 新创建一个 `ref`。
+ * 然后,`ref` 可以被传递，它会保持对其源`property`的响应式连接。
+ * 确保以下输出为true
 */
 const state = reactive({
   foo: 1,
   bar: 2,
 })
-const fooRef = ref() // change the impl...
+const fooRef = toRef(state,'foo') // 修改这里的实现...
 
-// mutating the ref updates the original
+// 修改引用将更新原引用
 fooRef.value++
 console.log(state.foo === 2)
 
-// mutating the original also updates the ref
+// 修改原引用也会更新`ref`
 state.foo++
 console.log(fooRef.value === 3)
 
@@ -53,6 +54,7 @@ console.log(fooRef.value === 3)
 
 <template>
   <div>
+    <h1>msg</h1>
     <p>
       <span @click="update(count-1)">-</span>
       {{ count }}

@@ -1,25 +1,36 @@
 <script setup lang='ts'>
 
-import { ref } from "vue"
+import { ref,watch } from "vue"
 
 /**
- * Implement the composable function
- * Make sure the function works correctly
+ * 实现`useLocalStorage`函数
 */
-function useLocalStorage(key: string, initialValue: any) {
-  const value = ref(initialValue)
+function useLocalStorage<T>(key: string, initialValue: T) {
+  const stored = localStorage.getItem(key)
+  const data = stored !== null ? JSON.parse(stored) : initialValue
 
-  return value
+  const state = ref<T>(data)
+
+  watch(
+    state,
+    (newVal) => {
+      localStorage.setItem(key, JSON.stringify(newVal))
+    },
+    { deep: true }
+  )
+
+  return state
 }
 
 const counter = useLocalStorage("counter", 0)
 
-// We can get localStorage by triggering the getter:
+// 我们可以通过触发`counter`的`getter`来获取本地存储的值
 console.log(counter.value)
 
-// And we can also set localStorage by triggering the setter:
-
-const update = () => counter.value++
+// 同样地,我们也可以通过触发`counter`的`setter`来设置本地存储的值
+const update = ()=>{
+  counter.value = 1
+}
 
 </script>
 

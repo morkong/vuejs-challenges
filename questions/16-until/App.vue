@@ -4,12 +4,19 @@ import { ref } from "vue"
 const count = ref(0)
 
 /**
- * Implement the until function
+ * 实现`until`函数
 */
 
 function until(initial) {
   function toBe(value) {
-
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (initial.value === value) {
+          clearInterval(interval)
+          resolve(1)
+        }
+      }, 100)
+    })
   }
 
   return {
@@ -23,13 +30,15 @@ async function increase() {
     count.value++
   }, 1000)
   await until(count).toBe(3)
-  console.log(count.value === 3) // Make sure the output is true
+  console.log(count.value === 3) // 确保输出为true
 }
-
 </script>
 
 <template>
-  <p @click="increase">
-    Increase
-  </p>
+  <div>
+    <h1>Until Challenge</h1>
+    <p @click="increase">
+      {{ count }}
+    </p>
+  </div>
 </template>

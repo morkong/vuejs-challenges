@@ -1,5 +1,7 @@
 <script setup lang="ts">
-// Add a piece of code to make the `count` value get injected into the child component.
+// 添加代码,使`count`值注入子组件
+import { inject } from 'vue';
+const count = inject('count', 0); // 默认值为0，如果没有提供
 </script>
 
 <template>

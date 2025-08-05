@@ -15,8 +15,8 @@ setInterval(() => {
 </template>
 
 <style scoped>
-/* Modify the code to bind the dynamic color */
+/* 修改以下代码绑定动态颜色 */
 p {
-  color: red
+  color: v-bind(theme);
 }
 </style>

@@ -4,13 +4,19 @@ import { ref } from "vue"
 const state = ref(false)
 
 /**
- * Implement the custom directive
- * Make sure the input element focuses/blurs when the 'state' is toggled
+ * 实现一个自定义指令,让元素获取焦点
+ * 确保当切换`state`时,元素随着状态值获取/失去焦点
  *
 */
 
 const VFocus = {
-
+  updated(el, binding, vnode, prevVnode) {
+    if (binding.value) {
+      el.focus()
+    }else {
+      el.blur()
+    }
+  },
 }
 
 setInterval(() => {
