@@ -1,16 +1,33 @@
 <script setup>
-import { watch } from "vue"
+import { watch,customRef  } from "vue"
 
 /**
- * Implement the function
+ * 补全以下函数来实现防抖ref :
 */
-function useDebouncedRef(value, delay = 200) {
-
+function useDebouncedRef(value, delay = 200) {  
+  let timer = null
+  return customRef((track, trigger) => {
+    return {
+      get() {
+        track()
+        return value
+      },
+      set(newValue) {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+          value = newValue
+          trigger()
+        }, delay)
+      }
+    }
+  })
 }
 const text = useDebouncedRef("hello")
 
 /**
- * Make sure the callback only gets triggered once when entered multiple times in a certain timeout
+ * 确保在输入框快速输入时, 只触发一次回调。
 */
 watch(text, (value) => {
   console.log(value)

@@ -17,6 +17,8 @@ describe("v-debounce-click", () => {
     })
     const wrapper = mount(App)
     await triggerClick(wrapper.find("button"), 2)
+    // 等待防抖延迟完成
+    await new Promise(resolve => setTimeout(resolve, 250))
     expect(JSON.stringify(result)).toBe("[\"Only triggered once when clicked many times quickly\"]")
   })
 })

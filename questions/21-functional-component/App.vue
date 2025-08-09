@@ -1,13 +1,23 @@
 <script setup lang='ts'>
 
-import { ref } from "vue"
+import { ref ,h} from "vue"
 
 /**
- * Implement a functional component :
- * 1. Render the list elements (ul/li) with the list data
- * 2. Change the list item text color to red when clicked.
+ * 实现该函数式组件 :
+ * 1. 使用`list`数据渲染列表元素 (ul/li)
+ * 2. 当点击列表子元素时,将其文本颜色更改为红色
 */
-const ListComponent = () => {
+const ListComponent = (props, context) => {
+  const {list,onToggle} = props
+  const activeIndex = context.attrs['active-index'] || 0
+  const {attrs ,emit ,slots} = context
+  return h('ul', attrs, list.map((item, index) => 
+    h('li', {
+      key: index,
+      style: { color: index === activeIndex ? 'red' : undefined },
+      onClick: () => onToggle(index)
+    }, item.name)
+  ))
 }
 
 const list = [{

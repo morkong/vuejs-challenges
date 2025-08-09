@@ -19,18 +19,37 @@ function debounce(fn,duration){
   }
 }
 
+/**
+ * 自定义指令：v-debounce-click
+ * 为元素添加防抖点击事件
+ */
 const VDebounceClick = {
-  mounted(el, binding, vnode) {
-    const fn = binding.value
-    const duration = binding.arg
-    const newFn = debounce(fn,duration)
-    el.addEventListener("click",newFn)
+  mounted(el: HTMLElement, binding: any) {
+    const delay = binding.arg ? parseInt(binding.arg) : 200
+    const handler = binding.value
+    
+    if (typeof handler !== 'function') {
+      console.warn('v-debounce-click directive expects a function as value')
+      return
+    }
+    
+    const debouncedHandler = debounce(handler, delay)
+    el._debouncedClickHandler = debouncedHandler
+    el.addEventListener('click', debouncedHandler)
   },
+  
+  beforeUnmount(el: HTMLElement) {
+    if (el._debouncedClickHandler) {
+      el.removeEventListener('click', el._debouncedClickHandler)
+      delete el._debouncedClickHandler
+    }
+  }
 }
 
 function onClick() {
   console.log("Only triggered once when clicked many times quickly")
 }
+
 
 </script>
 
