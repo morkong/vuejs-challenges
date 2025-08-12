@@ -25,5 +25,5 @@ const value = ref("Hello Vue.js")
 
 <template>
   <input v-oh-model:value="value" type="text" />
-  <p>{{ value }}</p>
+  <div>{{ value }}</div>
 </template>
